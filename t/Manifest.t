@@ -13,7 +13,7 @@ chdir 't';
 
 use strict;
 
-use Test::More tests => 96;
+use Test::More tests => 100;
 use Cwd;
 
 use File::Spec;
@@ -332,7 +332,19 @@ SKIP: {
     $funky_files{'space_quote_backslash'} = 'foo bar\\baz\'quux';
 }
 
-my @funky_keys = qw(space space_quote space_backslash space_quote_backslash);
+# test including a filename with a space, starting and ending with a quote
+SKIP: {
+    add_file( "'foo bar'" => "starting and ending with a quote" )
+        or skip "couldn't create test file starting and ending with a quote", 2;
+    local $ExtUtils::Manifest::MANIFEST = "albatross";
+    maniadd({ "'foo bar'" => "starting and ending with a quote"});
+    is( maniread()->{"'foo bar'"}, "starting and ending with a quote",
+    'manifest filename starting and ending with a quote' );
+    $funky_files{'starting_and_ending_with_quote'} = 'foo bar';
+}
+
+
+my @funky_keys = qw(space space_quote space_backslash space_quote_backslash starting_and_ending_with_quote);
 # test including an external manifest.skip file in MANIFEST.SKIP
 {
     maniadd({ foo => undef , albatross => undef,

@@ -1,3 +1,5 @@
+  - bugfix CPAN RT #57586: whole-name-quoted filename can't be read
+    https://rt.cpan.org/Ticket/Display.html?id=57586
   - bugfix CPAN RT #57046: Tests fail if $ENV{PERL_MM_MANIFEST_VERBOSE} is set to a false value.
     https://rt.cpan.org/Ticket/Display.html?id=57046
   - bugfix CPAN RT #21283: ExtUtils::Manifest does not follow symlinks
