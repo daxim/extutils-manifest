@@ -1,3 +1,4 @@
+  - add function: mkmanifestskip
   - bugfix CPAN RT #57507: Default MANIFEST.SKIP too aggressive about exclusions
     https://rt.cpan.org/Ticket/Display.html?id=57507
   - bugfix CPAN RT #57586: whole-name-quoted filename can't be read

@@ -16,7 +16,7 @@ use vars qw($VERSION @ISA @EXPORT_OK
 
 $VERSION = '1.60';
 @ISA=('Exporter');
-@EXPORT_OK = qw(mkmanifest
+@EXPORT_OK = qw(mkmanifest mkmanifestskip
                 manicheck  filecheck  fullcheck  skipcheck
                 manifind   maniread   manicopy   maniadd
                 maniskip
@@ -72,6 +72,7 @@ ExtUtils::Manifest - utilities to write and check a MANIFEST file
     use ExtUtils::Manifest qw(...funcs to import...);
 
     mkmanifest();
+    mkmanifestskip();
 
     my @missing_files    = manicheck;
     my @skipped          = skipcheck;
@@ -166,6 +167,21 @@ sub clean_up_filename {
   return $filename;
 }
 
+=over 4
+
+=item mkmanifestskip
+
+    mkmanifestskip();
+
+Writes out a MANIFEST.SKIP file with good defaults. An existing file
+will be overwritten.
+
+=cut
+
+sub mkmanifestskip {
+    copy $DEFAULT_MSKIP, 'MANIFEST.SKIP'
+        or die "Can't copy('$DEFAULT_MSKIP', 'MANIFEST.SKIP'): $!";
+}
 
 =item manifind
 
@@ -795,6 +811,9 @@ For example:
     \.old$
     ^#.*#$
     ^\.#
+
+You should probably just call L</mkmanifestskip> to write out
+reasonable defaults and then change it to your needs.
 
 If no MANIFEST.SKIP file is found, a default set of skips will be
 used, similar to the example above.  If you want nothing skipped,
