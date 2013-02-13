@@ -1,7 +1,7 @@
 # Avoid version control files.
-\bRCS\b
-\bCVS\b
-\bSCCS\b
+\bRCS(?!\.pm)\b
+\bCVS(?!\.pm)\b
+\bSCCS(?!\.pm)\b
 ,v$
 \B\.svn\b
 \B\.git\b
