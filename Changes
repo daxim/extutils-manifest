@@ -1,3 +1,6 @@
+  - bugfix CPAN RT #3109: Aborting 'make manifest' can leave you with a broken MANIFEST
+    https://rt.cpan.org/Ticket/Display.html?id=3109
+
 1.60  Mon, Aug 19, 2011
   - Clean up MANIFEST before creating a new one.
 

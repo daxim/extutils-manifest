@@ -3,9 +3,10 @@ package ExtUtils::Manifest;
 require Exporter;
 use Config;
 use File::Basename;
-use File::Copy 'copy';
+use File::Copy qw(copy mv);
 use File::Find;
 use File::Spec;
+use File::Temp qw();
 use Carp;
 use strict;
 
@@ -119,11 +120,10 @@ sub mkmanifest {
     my $manimiss = 0;
     my $read = (-r 'MANIFEST' && maniread()) or $manimiss++;
     $read = {} if $manimiss;
-    local *M;
     my $bakbase = $MANIFEST;
     $bakbase =~ s/\./_/g if $Is_VMS_nodot; # avoid double dots
     rename $MANIFEST, "$bakbase.bak" unless $manimiss;
-    open M, "> $MANIFEST" or die "Could not open $MANIFEST: $!";
+    my $manifest_tmp = File::Temp->new;
     my $skip = maniskip();
     my $found = manifind();
     my($key,$val,$file,%all);
@@ -150,9 +150,11 @@ sub mkmanifest {
             $file =~ s/([\\'])/\\$1/g;
             $file = "'$file'";
         }
-    print M $file, "\t" x $tabs, $text, "\n";
+    print {$manifest_tmp} $file, "\t" x $tabs, $text, "\n";
     }
-    close M;
+    close $manifest_tmp; # flush, but not yet destroyed
+    mv($manifest_tmp->filename, $MANIFEST)
+        or die "Can't mv('$manifest_tmp->filename', '$MANIFEST'): $!";
 }
 
 # Geez, shouldn't this use File::Spec or File::Basename or something?
