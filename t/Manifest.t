@@ -1,5 +1,5 @@
 #!/usr/bin/perl -w
-
+$ExtUtils::Manifest::Verbose = 1 if $ENV{HARNESS_ACTIVE};
 BEGIN {
     if( $ENV{PERL_CORE} ) {
         chdir 't' if -d 't';
