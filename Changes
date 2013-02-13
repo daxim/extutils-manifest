@@ -1,3 +1,5 @@
+  - bugfix CPAN RT #21290: print to STDERR instead of warn
+    https://rt.cpan.org/Ticket/Display.html?id=21290
   - bugfix CPAN RT #3109: Aborting 'make manifest' can leave you with a broken MANIFEST
     https://rt.cpan.org/Ticket/Display.html?id=3109
 

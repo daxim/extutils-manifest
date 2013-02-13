@@ -19,6 +19,7 @@ use Cwd;
 use File::Spec;
 use File::Path;
 use File::Find;
+use File::Temp qw();
 use Config;
 
 my $Is_VMS = $^O eq 'VMS';
@@ -60,9 +61,18 @@ sub read_manifest {
 }
 
 sub catch_warning {
-    my $warn = '';
-    local $SIG{__WARN__} = sub { $warn .= $_[0] };
-    return join('', $_[0]->() ), $warn;
+    my ($coderef) = @_;
+    my @result;
+
+    # in non-infrastructure code, we would just depend on Capture::Tiny
+    my $warn = File::Temp->new;
+    {
+        local *STDERR;
+        open *STDERR, '>', $warn->filename;
+        @result = $coderef->();
+    }
+    $warn->flush;
+    return join('', @result), join('', readline $warn);
 }
 
 sub remove_dir {
